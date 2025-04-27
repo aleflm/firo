@@ -20,6 +20,11 @@
 #include "eckey_impl.h"
 #include "hash_impl.h"
 
+#if !defined(SECP256K1_BUILD) && defined(__GNUC__) && !defined(__clang__) && SECP256K1_GNUC_PREREQ(3, 4)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wnonnull-compare"
+#endif 
+
 #define ARG_CHECK(cond) do { \
     if (EXPECT(!(cond), 0)) { \
         secp256k1_callback_call(&ctx->illegal_callback, #cond); \
@@ -556,4 +561,9 @@ int secp256k1_ec_pubkey_combine(const secp256k1_context* ctx, secp256k1_pubkey *
 
 #ifdef ENABLE_MODULE_RECOVERY
 # include "modules/recovery/main_impl.h"
+#endif
+
+
+#if !defined(SECP256K1_BUILD) && defined(__GNUC__) && !defined(__clang__) && SECP256K1_GNUC_PREREQ(3, 4)
+    #pragma GCC diagnostic pop                    /* restore warnings state */ :contentReference[oaicite:2]{index=2}
 #endif

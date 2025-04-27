@@ -15,6 +15,20 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#if !defined(SECP256K1_GNUC_PREREQ)
+    #if defined(__GNUC__) && defined(__GNUC_MINOR__) && !defined(SECP256K1_GNUC_PREREQ)
+        #define SECP256K1_GNUC_PREREQ(_maj,_min) \
+            ((__GNUC__<<16)+__GNUC_MINOR__>=((_maj)<<16)+(_min))
+    #else
+        #define SECP256K1_GNUC_PREREQ(_maj,_min) 0
+    #endif
+#endif
+
+#if !defined(SECP256K1_BUILD) && defined(__GNUC__) && !defined(__clang__) && SECP256K1_GNUC_PREREQ(3, 4)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wnonnull-compare"
+#endif 
+
 typedef struct {
     void (*fn)(const char *text, void* data);
     const void* data;
@@ -113,6 +127,10 @@ static SECP256K1_INLINE void *checked_realloc(const secp256k1_callback* cb, void
 #  define SECP256K1_GNUC_EXT
 # endif
 SECP256K1_GNUC_EXT typedef unsigned __int128 uint128_t;
+#endif
+
+#if !defined(SECP256K1_BUILD) && defined(__GNUC__) && !defined(__clang__) && SECP256K1_GNUC_PREREQ(3, 4)
+    #pragma GCC diagnostic pop                    /* restore warnings state */ :contentReference[oaicite:2]{index=2}
 #endif
 
 #endif
