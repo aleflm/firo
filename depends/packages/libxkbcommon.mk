@@ -1,8 +1,8 @@
 package=libxkbcommon
-$(package)_version=0.8.4
-$(package)_download_path=https://xkbcommon.org/download/
-$(package)_file_name=$(package)-$($(package)_version).tar.xz
-$(package)_sha256_hash=60ddcff932b7fd352752d51a5c4f04f3d0403230a584df9a2e0d5ed87c486c8b
+$(package)_version=1.9.2
+$(package)_download_path=https://github.com/xkbcommon/libxkbcommon/archive/
+$(package)_file_name=xkbcommon-$($(package)_version).tar.gz
+$(package)_sha256_hash=8d68a8b45796f34f7cace357b9f89b8c92b158557274fef5889b03648b55fe59
 $(package)_dependencies=libxcb
 
 # This package explicitly enables -Werror=array-bounds, which causes build failures
