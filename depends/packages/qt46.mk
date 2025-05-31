@@ -3,7 +3,7 @@ $(package)_version=4.6.4
 $(package)_download_path=http://download.qt-project.org/archive/qt/4.6/
 $(package)_file_name=qt-everywhere-opensource-src-$($(package)_version).tar.gz
 $(package)_sha256_hash=9ad4d46c721b53a429ed5a2eecfd3c239a9ab566562f183f99d3125f1a234250
-$(package)_dependencies=openssl freetype dbus libX11 xproto libXext libICE libSM
+$(package)_dependencies= freetype dbus libX11 xproto libXext libICE libSM
 $(package)_patches=stlfix.patch 
 
 define $(package)_set_vars
@@ -14,7 +14,7 @@ $(package)_config_opts += -stl -qt-zlib
 $(package)_config_opts += -nomake examples -nomake tests -nomake tools -nomake translations -nomake demos -nomake docs
 $(package)_config_opts += -no-audio-backend -no-glib -no-nis -no-cups -no-iconv -no-gif -no-pch
 $(package)_config_opts += -no-xkb -no-xrender -no-xrandr -no-xfixes -no-xcursor -no-xinerama -no-xsync -no-xinput -no-mitshm -no-xshape
-$(package)_config_opts += -no-libtiff -no-fontconfig -openssl-linked
+$(package)_config_opts += -no-libtiff -no-fontconfig
 $(package)_config_opts += -no-sql-db2 -no-sql-ibase -no-sql-oci -no-sql-tds -no-sql-mysql
 $(package)_config_opts += -no-sql-odbc -no-sql-psql -no-sql-sqlite -no-sql-sqlite2
 $(package)_config_opts += -no-xmlpatterns -no-multimedia -no-phonon -no-scripttools -no-declarative
