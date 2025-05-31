@@ -3,7 +3,7 @@ $(package)_version=0.4.8.9
 $(package)_download_path=https://archive.torproject.org/tor-package-archive
 $(package)_file_name=$(package)-$($(package)_version).tar.gz
 $(package)_sha256_hash=59bb7d8890f6131b4ce5344f3dcea5deb2182b7f4f10ff0cb4e4d81f11b2cf65
-$(package)_dependencies=zlib openssl libevent
+$(package)_dependencies= openssl libevent
 $(package)_patches = configure.patch
 $(package)_lib_files = \
     src/core/libtor-app.a \
