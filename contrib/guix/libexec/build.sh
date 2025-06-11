@@ -334,6 +334,17 @@ mkdir -p "$DISTSRC"
     # checked out before starting a build.
     CMAKEFLAGS+=" -DMANUAL_SUBMODULES=1"
 
+    # Empty environment variables for x86_64-apple-darwin
+    if [[ "$HOST" == "x86_64-apple-darwin"* ]]; then
+        unset LIBRARY_PATH
+        unset CPATH
+        unset C_INCLUDE_PATH
+        unset CPLUS_INCLUDE_PATH
+        unset OBJC_INCLUDE_PATH
+        unset OBJCPLUS_INCLUDE_PATH
+    fi
+
+
     # Configure this DISTSRC for $HOST
     # shellcheck disable=SC2086
     env CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}" OBJCXXFLAGS="${HOST_OBJCXXFLAGS}" \
