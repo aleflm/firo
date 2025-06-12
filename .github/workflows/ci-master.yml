@@ -384,7 +384,7 @@ jobs:
     env:
       HOST: x86_64-linux-gnu
       ARTIFACT_DIR: guix-binaries-x86_64-linux-gnu
-      SUBSTITUTE_URLS: "https://bordeaux.guix.gnu.org https://substitutes.nonguix.org https://hydra-guix-129.guix.gnu.org"
+      SUBSTITUTE_URLS: "http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -437,7 +437,7 @@ jobs:
     env:
       HOST: aarch64-linux-gnu
       ARTIFACT_DIR: guix-binaries-aarch64-linux-gnu
-      SUBSTITUTE_URLS: "https://bordeaux.guix.gnu.org https://substitutes.nonguix.org https://hydra-guix-129.guix.gnu.org"
+      SUBSTITUTE_URLS: "http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -490,7 +490,7 @@ jobs:
     env:
       HOST: x86_64-w64-mingw32
       ARTIFACT_DIR: guix-binaries-x86_64-w64-mingw32
-      SUBSTITUTE_URLS: "https://bordeaux.guix.gnu.org https://substitutes.nonguix.org https://hydra-guix-129.guix.gnu.org"
+      SUBSTITUTE_URLS: "http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -543,7 +543,7 @@ jobs:
     env:
       HOST: arm64-apple-darwin
       ARTIFACT_DIR: guix-binaries-arm64-apple-darwin
-      SUBSTITUTE_URLS: "https://bordeaux.guix.gnu.org https://substitutes.nonguix.org https://hydra-guix-129.guix.gnu.org"
+      SUBSTITUTE_URLS: "http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -608,7 +608,7 @@ jobs:
     env:
       HOST: x86_64-apple-darwin
       ARTIFACT_DIR: guix-binaries-x86_64-apple-darwin
-      SUBSTITUTE_URLS: "https://bordeaux.guix.gnu.org https://substitutes.nonguix.org https://hydra-guix-129.guix.gnu.org"
+      SUBSTITUTE_URLS: "http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
