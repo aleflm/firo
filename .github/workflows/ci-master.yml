@@ -364,8 +364,8 @@ jobs:
       with:
         name: mac-autotools-binaries
         path: ${{ env.ARTIFACT_DIR }}
-  setup-depends:
-    name: Setup Depends
+  download-depends:
+    name: Download Depends
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -379,7 +379,7 @@ jobs:
           path: depends
   build-guix-x86_64-linux-gnu:
     name: build-guix-x86_64-linux-gnu
-    needs: setup-depends
+    needs: download-depends
     runs-on: ubuntu-22.04
     env:
       HOST: x86_64-linux-gnu
@@ -401,6 +401,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
+      - name: Pull Guix
+        run: |
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
       - name: Run Guix Build
         run: |
@@ -419,7 +421,7 @@ jobs:
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-aarch64-linux-gnu:
     name: build-guix-aarch64-linux-gnu
-    needs: setup-depends
+    needs: download-depends
     runs-on: ubuntu-22.04
     env:
       HOST: aarch64-linux-gnu
@@ -441,6 +443,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
+      - name: Pull Guix
+        run: |
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
       - name: Run Guix Build
         run: |
@@ -459,7 +463,7 @@ jobs:
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-x86_64-w64-mingw32:
     name: build-guix-x86_64-w64-mingw32
-    needs: setup-depends
+    needs: download-depends
     runs-on: ubuntu-22.04
     env:
       HOST: x86_64-w64-mingw32
@@ -481,6 +485,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
+      - name: Pull Guix
+        run: |
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
       - name: Run Guix Build
         run: |
@@ -499,7 +505,7 @@ jobs:
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-arm64-apple-darwin:
     name: build-guix-arm64-apple-darwin
-    needs: setup-depends
+    needs: download-depends
     runs-on: ubuntu-22.04
     env:
       HOST: arm64-apple-darwin
@@ -531,6 +537,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
+      - name: Pull Guix
+        run: |
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
       - name: Run Guix Build
         run: |
@@ -551,7 +559,7 @@ jobs:
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-x86_64-apple-darwin:
     name: build-guix-x86_64-apple-darwin
-    needs: setup-depends
+    needs: download-depends
     runs-on: ubuntu-22.04
     env:
       HOST: x86_64-apple-darwin
@@ -583,6 +591,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
+      - name: Pull Guix
+        run: |
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
       - name: Run Guix Build
         run: |
