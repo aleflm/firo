@@ -397,6 +397,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Cache Guix directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            /gnu/store
+            ~/.config/guix
+            /var/guix/profiles
+            /var/guix/gcroots
+          key: ${{ runner.os }}-guix-${{ env.HOST }}-${{ hashFiles('contrib/guix/manifest.scm') }}
+          restore-keys: |
+            ${{ runner.os }}-guix-${{ env.HOST }}-
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -439,6 +450,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Cache Guix directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            /gnu/store
+            ~/.config/guix
+            /var/guix/profiles
+            /var/guix/gcroots
+          key: ${{ runner.os }}-guix-${{ env.HOST }}-${{ hashFiles('contrib/guix/manifest.scm') }}
+          restore-keys: |
+            ${{ runner.os }}-guix-${{ env.HOST }}-
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -481,6 +503,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Cache Guix directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            /gnu/store
+            ~/.config/guix
+            /var/guix/profiles
+            /var/guix/gcroots
+          key: ${{ runner.os }}-guix-${{ env.HOST }}-${{ hashFiles('contrib/guix/manifest.scm') }}
+          restore-keys: |
+            ${{ runner.os }}-guix-${{ env.HOST }}-
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -497,7 +530,7 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -533,6 +566,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Cache Guix directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            /gnu/store
+            ~/.config/guix
+            /var/guix/profiles
+            /var/guix/gcroots
+          key: ${{ runner.os }}-guix-${{ env.HOST }}-${{ hashFiles('contrib/guix/manifest.scm') }}
+          restore-keys: |
+            ${{ runner.os }}-guix-${{ env.HOST }}-
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -551,7 +595,7 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -587,6 +631,17 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Cache Guix directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            /gnu/store
+            ~/.config/guix
+            /var/guix/profiles
+            /var/guix/gcroots
+          key: ${{ runner.os }}-guix-${{ env.HOST }}-${{ hashFiles('contrib/guix/manifest.scm') }}
+          restore-keys: |
+            ${{ runner.os }}-guix-${{ env.HOST }}-
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -605,7 +660,7 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
