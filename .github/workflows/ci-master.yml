@@ -419,6 +419,7 @@ jobs:
         run: |
           CORES=$(nproc)
           env HOSTS="${HOST}" \
+            FORCE_DIRTY_WORKTREE=1 \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES --substitute-urls='$SUBSTITUTE_URLS'" \
             ./contrib/guix/guix-build
       - name: Prepare Files for Artifact
@@ -472,6 +473,7 @@ jobs:
         run: |
           CORES=$(nproc)
           env HOSTS="${HOST}" \
+            FORCE_DIRTY_WORKTREE=1 \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES --substitute-urls='$SUBSTITUTE_URLS'" \
             ./contrib/guix/guix-build
       - name: Prepare Files for Artifact
@@ -525,6 +527,7 @@ jobs:
         run: |
           CORES=$(nproc)
           env HOSTS="${HOST}" \
+            FORCE_DIRTY_WORKTREE=1 \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES --substitute-urls='$SUBSTITUTE_URLS'" \
             ./contrib/guix/guix-build
       - name: Prepare Files for Artifact
@@ -589,6 +592,7 @@ jobs:
           CORES=$(nproc)
           export SDK_PATH="$(pwd)/depends/SDKs"
           env HOSTS="${HOST}" \
+              FORCE_DIRTY_WORKTREE=1 \
               SDK_PATH="$SDK_PATH" \
               ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES --substitute-urls='$SUBSTITUTE_URLS'" \
               ./contrib/guix/guix-build
@@ -654,6 +658,7 @@ jobs:
           CORES=$(nproc)
           export SDK_PATH="$(pwd)/depends/SDKs"
           env HOSTS="${HOST}" \
+              FORCE_DIRTY_WORKTREE=1 \
               SDK_PATH="$SDK_PATH" \
               ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES --substitute-urls='$SUBSTITUTE_URLS'" \
               ./contrib/guix/guix-build
