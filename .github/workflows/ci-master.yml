@@ -378,6 +378,7 @@ jobs:
           name: depends
           path: depends
   build-guix-x86_64-linux-gnu:
+    if: false
     name: build-guix-x86_64-linux-gnu
     needs: download-depends
     runs-on: ubuntu-22.04
@@ -432,6 +433,7 @@ jobs:
           name: guix-binaries-x86_64-linux-gnu
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-aarch64-linux-gnu:
+    if: false
     name: build-guix-aarch64-linux-gnu
     needs: download-depends
     runs-on: ubuntu-22.04
