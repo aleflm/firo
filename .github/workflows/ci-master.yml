@@ -398,6 +398,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Prepare /gnu/store for caching
+        run: |
+          sudo mkdir -p /gnu/store
+          sudo chown $USER:$USER /gnu/store
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -453,6 +457,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Prepare /gnu/store for caching
+        run: |
+          sudo mkdir -p /gnu/store
+          sudo chown $USER:$USER /gnu/store
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -507,6 +515,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Prepare /gnu/store for caching
+        run: |
+          sudo mkdir -p /gnu/store
+          sudo chown $USER:$USER /gnu/store
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -571,6 +583,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Prepare /gnu/store for caching
+        run: |
+          sudo mkdir -p /gnu/store
+          sudo chown $USER:$USER /gnu/store
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -637,6 +653,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Prepare /gnu/store for caching
+        run: |
+          sudo mkdir -p /gnu/store
+          sudo chown $USER:$USER /gnu/store
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
