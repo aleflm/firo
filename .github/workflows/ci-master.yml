@@ -420,9 +420,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
-      - name: Pull Guix
+      - name: Pull Guix (pinned)
         run: |
-          guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
+          guix time-machine --commit=5ca3a9a127b4e26c2884c411b46ad448d05a96a2 -- describe
       - name: Run Guix Build
         run: |
           CORES=$(nproc)
@@ -482,9 +482,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
-      - name: Pull Guix
+      - name: Pull Guix (pinned)
         run: |
-          guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
+          guix time-machine --commit=5ca3a9a127b4e26c2884c411b46ad448d05a96a2 -- describe
       - name: Run Guix Build
         run: |
           CORES=$(nproc)
@@ -544,9 +544,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
-      - name: Pull Guix
+      - name: Pull Guix (pinned)
         run: |
-          guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
+          guix time-machine --commit=5ca3a9a127b4e26c2884c411b46ad448d05a96a2 -- describe
       - name: Run Guix Build
         run: |
           CORES=$(nproc)
@@ -615,9 +615,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
-      - name: Pull Guix
+      - name: Pull Guix (pinned)
         run: |
-          guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
+          guix time-machine --commit=5ca3a9a127b4e26c2884c411b46ad448d05a96a2 -- describe
       - name: Run Guix Build
         run: |
           CORES=$(nproc)
@@ -688,9 +688,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y guix
-      - name: Pull Guix
+      - name: Pull Guix (pinned)
         run: |
-          guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="$SUBSTITUTE_URLS"
+          guix time-machine --commit=5ca3a9a127b4e26c2884c411b46ad448d05a96a2 -- describe
       - name: Run Guix Build
         run: |
           CORES=$(nproc)
