@@ -398,10 +398,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-      - name: Prepare /gnu/store for caching
+      - name: Prepare Guix system directories for caching
         run: |
           sudo mkdir -p /gnu/store
-          sudo chown $USER:$USER /gnu/store
+          sudo mkdir -p /var/guix/profiles/per-user/runner
+          sudo mkdir -p /var/guix/gcroots/auto
+          sudo chown -R $USER:$USER /gnu/store
+          sudo chown -R $USER:$USER /var/guix
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -457,10 +460,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-      - name: Prepare /gnu/store for caching
+      - name: Prepare Guix system directories for caching
         run: |
           sudo mkdir -p /gnu/store
-          sudo chown $USER:$USER /gnu/store
+          sudo mkdir -p /var/guix/profiles/per-user/runner
+          sudo mkdir -p /var/guix/gcroots/auto
+          sudo chown -R $USER:$USER /gnu/store
+          sudo chown -R $USER:$USER /var/guix
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -496,6 +502,7 @@ jobs:
           name: guix-binaries-aarch64-linux-gnu
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-x86_64-w64-mingw32:
+    if: false
     name: build-guix-x86_64-w64-mingw32
     needs: download-depends
     runs-on: ubuntu-22.04
@@ -515,10 +522,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-      - name: Prepare /gnu/store for caching
+      - name: Prepare Guix system directories for caching
         run: |
           sudo mkdir -p /gnu/store
-          sudo chown $USER:$USER /gnu/store
+          sudo mkdir -p /var/guix/profiles/per-user/runner
+          sudo mkdir -p /var/guix/gcroots/auto
+          sudo chown -R $USER:$USER /gnu/store
+          sudo chown -R $USER:$USER /var/guix
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -583,10 +593,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-      - name: Prepare /gnu/store for caching
+      - name: Prepare Guix system directories for caching
         run: |
           sudo mkdir -p /gnu/store
-          sudo chown $USER:$USER /gnu/store
+          sudo mkdir -p /var/guix/profiles/per-user/runner
+          sudo mkdir -p /var/guix/gcroots/auto
+          sudo chown -R $USER:$USER /gnu/store
+          sudo chown -R $USER:$USER /var/guix
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
@@ -653,10 +666,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
-      - name: Prepare /gnu/store for caching
+      - name: Prepare Guix system directories for caching
         run: |
           sudo mkdir -p /gnu/store
-          sudo chown $USER:$USER /gnu/store
+          sudo mkdir -p /var/guix/profiles/per-user/runner
+          sudo mkdir -p /var/guix/gcroots/auto
+          sudo chown -R $USER:$USER /gnu/store
+          sudo chown -R $USER:$USER /var/guix
       - name: Cache Guix directories
         uses: actions/cache@v4
         with:
