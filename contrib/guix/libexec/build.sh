@@ -352,6 +352,7 @@ mkdir -p "$DISTSRC"
       -DCMAKE_INSTALL_PREFIX="${INSTALLPATH}" \
       -DCMAKE_EXE_LINKER_FLAGS="${HOST_LDFLAGS}" \
       -DCMAKE_SHARED_LINKER_FLAGS="${HOST_LDFLAGS}" \
+      -DCMAKE_BUILD_TYPE=Release \
       ${CMAKEFLAGS}
 
     make -C build --jobs="$JOBS"
