@@ -114,6 +114,150 @@ jobs:
       with:
         name: test-cmake-logs
         path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
+  build-aarch64-linux-debug-cmake:
+    name: build-aarch64-linux-debug-cmake
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_DIR: aarch64-linux-debug-cmake-binaries
+      TEST_LOG_ARTIFACT_DIR: test-logs
+    steps:
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install Required Packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake g++-14-aarch64-linux-gnu gcc-14-plugin-dev-aarch64-linux-gnu
+    - name: Update binary path for aarch64-linux-gnu-g++/gcc
+      run: |
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-14 100
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-14 100
+    - name: Verify ZMQ Installation
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install pyzmq
+    - name: Download Dependencies
+      run: make -C depends download
+    - name: Build Dependencies
+      run: make -C depends -j$(nproc) HOST=aarch64-linux-gnu
+    - name: Build Firo
+      run: |
+        mkdir build
+        export HOST_TRIPLET=$(depends/config.guess)
+        cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
+        cd build && make -j$(nproc)
+    - name: Run Unit Tests
+      run: |
+        cd build && make test
+    - name: Run RPC Tests
+      env:
+        TIMEOUT: 600
+      run: |
+        cp -rf build/bin/* build/src/
+        qa/pull-tester/rpc-tests.py -extended
+    - name: Prepare Files for Artifact
+      run: |
+        mkdir -p $ARTIFACT_DIR
+        mv build/bin/{firo-cli,firo-tx,firod,firo-qt} $ARTIFACT_DIR
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-cmake-binaries
+        path: ${{ env.ARTIFACT_DIR }}
+    - name: Prepare Test Logs for Artifact
+      if: failure()
+      run: |
+        tor_log=$(find . -path '*/tor/test-suite.log' -type f || true)
+        firo_log=$(find . -path '*/src/test-suite.log' -type f || true)
+
+        mkdir -p $TEST_LOG_ARTIFACT_DIR
+
+        if test -f $tor_log; then
+          mv $tor_log $TEST_LOG_ARTIFACT_DIR/tor.log
+        fi
+
+        if test -f $firo_log; then
+          mv $firo_log $TEST_LOG_ARTIFACT_DIR/firo.log
+        fi
+    - name: Upload Test Logs Artifact
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-cmake-logs
+        path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
+  build-x86_64-linux-debug-cmake:
+    name: build-x86_64-linux-debug-cmake
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_DIR: x86_64-linux-debug-cmake-binaries
+      TEST_LOG_ARTIFACT_DIR: test-logs
+    steps:
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install Required Packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-zmq cmake build-essential
+    - name: Verify ZMQ Installation
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install pyzmq
+    - name: Download Dependencies
+      run: make -C depends download
+    - name: Build Dependencies
+      run: make -C depends -j$(nproc) HOST=x86_64-linux-gnu
+    - name: Build Firo
+      run: |
+        mkdir build
+        export HOST_TRIPLET=$(depends/config.guess)
+        cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
+        cd build && make -j$(nproc)
+    - name: Run Unit Tests
+      run: |
+        cd build && make test
+    - name: Run RPC Tests
+      env:
+        TIMEOUT: 600
+      run: |
+        cp -rf build/bin/* build/src/
+        qa/pull-tester/rpc-tests.py -extended
+    - name: Prepare Files for Artifact
+      run: |
+        mkdir -p $ARTIFACT_DIR
+        mv build/bin/{firo-cli,firo-tx,firod,firo-qt} $ARTIFACT_DIR
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-cmake-binaries
+        path: ${{ env.ARTIFACT_DIR }}
+    - name: Prepare Test Logs for Artifact
+      if: failure()
+      run: |
+        tor_log=$(find . -path '*/tor/test-suite.log' -type f || true)
+        firo_log=$(find . -path '*/src/test-suite.log' -type f || true)
+
+        mkdir -p $TEST_LOG_ARTIFACT_DIR
+
+        if test -f $tor_log; then
+          mv $tor_log $TEST_LOG_ARTIFACT_DIR/tor.log
+        fi
+
+        if test -f $firo_log; then
+          mv $firo_log $TEST_LOG_ARTIFACT_DIR/firo.log
+        fi
+    - name: Upload Test Logs Artifact
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-cmake-logs
+        path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
   build-linux-autotools:
     name: build-linux-autotools
     needs: create-source-distribution
@@ -257,6 +401,41 @@ jobs:
         mkdir build
         export HOST_TRIPLET=$(x86_64-w64-mingw32-gcc -dumpmachine)
         cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=ON -S$(realpath .) -B$(realpath build)
+        cd build && make -j$(nproc)
+    - name: Prepare Files for Artifact
+      run: |
+        mkdir -p $ARTIFACT_DIR
+        mv build/bin/{firo-cli.exe,firo-tx.exe,firod.exe,firo-qt.exe} $ARTIFACT_DIR
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-cmake-binaries
+        path: ${{ env.ARTIFACT_DIR }}
+  build-windows-debug-cmake:
+    name: build-windows-debug-cmake
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_DIR: windows-debug-cmake-binaries
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install Required Packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++-mingw-w64-x86-64 gcc-mingw-w64-x86-64 cmake
+    - name: Switch MinGW GCC and G++ to POSIX Threading
+      run: |
+        sudo update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+        sudo update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+    - name: Download Dependencies
+      run: make -C depends download
+    - name: Build Dependencies
+      run: make -C depends -j$(nproc) HOST=x86_64-w64-mingw32
+    - name: Build Firo
+      run: |
+        mkdir build
+        export HOST_TRIPLET=$(x86_64-w64-mingw32-gcc -dumpmachine)
+        cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Debug -DBUILD_GUI=ON -S$(realpath .) -B$(realpath build)
         cd build && make -j$(nproc)
     - name: Prepare Files for Artifact
       run: |
