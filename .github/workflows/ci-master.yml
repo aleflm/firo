@@ -112,7 +112,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-cmake-logs
+        name: test-linux-cmake-logs
         path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
   build-aarch64-linux-debug-cmake:
     name: build-aarch64-linux-debug-cmake
@@ -165,7 +165,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: linux-cmake-binaries
+        name: aarch64-linux-debug-cmake-binaries
         path: ${{ env.ARTIFACT_DIR }}
     - name: Prepare Test Logs for Artifact
       if: failure()
@@ -186,7 +186,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-cmake-logs
+        name: test-aarch64-linux-debug-cmake-logs
         path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
   build-x86_64-linux-debug-cmake:
     name: build-x86_64-linux-debug-cmake
@@ -235,7 +235,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: linux-cmake-binaries
+        name: x86_64-linux-debug-cmake-binaries
         path: ${{ env.ARTIFACT_DIR }}
     - name: Prepare Test Logs for Artifact
       if: failure()
@@ -256,7 +256,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-cmake-logs
+        name: test-x86_64-linux-debug-cmake-logs
         path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
   build-linux-autotools:
     name: build-linux-autotools
@@ -332,7 +332,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-autotools-logs
+        name: test-linux-autotools-logs
         path: ${{ env.TEST_LOG_ARTIFACT_DIR }}
   build-windows-autotools:
     name: build-windows-autotools
@@ -444,7 +444,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: windows-cmake-binaries
+        name: windows-debug-cmake-binaries
         path: ${{ env.ARTIFACT_DIR }}
   build-mac-cmake:
     name: build-mac-cmake
@@ -574,7 +574,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: guix-binaries-x86_64-linux-gnu
+          name: x86_64-linux-guix-binaries
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-aarch64-linux-gnu:
     name: build-guix-aarch64-linux-gnu
@@ -607,7 +607,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: guix-binaries-aarch64-linux-gnu
+          name: aarch64-linux-guix-binaries
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-x86_64-w64-mingw32:
     name: build-guix-x86_64-w64-mingw32
@@ -640,7 +640,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: guix-binaries-x86_64-w64-mingw32
+          name: x86_64-windows-guix-binaries
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-arm64-apple-darwin:
     name: build-guix-arm64-apple-darwin
@@ -687,7 +687,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: guix-binaries-arm64-apple-darwin
+          name: arm64-mac-guix-binaries
           path: ${{ env.ARTIFACT_DIR }}
   build-guix-x86_64-apple-darwin:
     name: build-guix-x86_64-apple-darwin
@@ -734,5 +734,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: guix-binaries-x86_64-apple-darwin
+          name: x86_64-mac-guix-binaries
           path: ${{ env.ARTIFACT_DIR }}
