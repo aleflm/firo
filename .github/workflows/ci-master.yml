@@ -120,6 +120,7 @@ jobs:
     env:
       ARTIFACT_DIR: aarch64-linux-debug-cmake-binaries
       TEST_LOG_ARTIFACT_DIR: test-logs
+      HOST: aarch64-linux-gnu
     steps:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
@@ -142,12 +143,11 @@ jobs:
     - name: Download Dependencies
       run: make -C depends download
     - name: Build Dependencies
-      run: make -C depends -j$(nproc) HOST=aarch64-linux-gnu
+      run: make -C depends -j$(nproc) HOST=$HOST
     - name: Build Firo
       run: |
         mkdir build
-        export HOST_TRIPLET=$(depends/config.guess)
-        cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
+        cmake -DCMAKE_TOOLCHAIN_FILE=./depends/$HOST/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
         cd build && make -j$(nproc)
     - name: Run Unit Tests
       run: |
@@ -194,6 +194,7 @@ jobs:
     env:
       ARTIFACT_DIR: x86_64-linux-debug-cmake-binaries
       TEST_LOG_ARTIFACT_DIR: test-logs
+      HOST: x86_64-linux-gnu
     steps:
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
@@ -212,12 +213,11 @@ jobs:
     - name: Download Dependencies
       run: make -C depends download
     - name: Build Dependencies
-      run: make -C depends -j$(nproc) HOST=x86_64-linux-gnu
+      run: make -C depends -j$(nproc) HOST=$HOST
     - name: Build Firo
       run: |
         mkdir build
-        export HOST_TRIPLET=$(depends/config.guess)
-        cmake -DCMAKE_TOOLCHAIN_FILE=$(realpath depends/$HOST_TRIPLET/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
+        cmake -DCMAKE_TOOLCHAIN_FILE=./depends/$HOST/toolchain.cmake -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
         cd build && make -j$(nproc)
     - name: Run Unit Tests
       run: |
