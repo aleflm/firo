@@ -147,7 +147,7 @@ jobs:
     - name: Build Firo
       run: |
         mkdir build
-        cmake -DCMAKE_TOOLCHAIN_FILE=./depends/$HOST/toolchain.cmake) -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
+        cmake -DCMAKE_TOOLCHAIN_FILE=./depends/$HOST/toolchain.cmake -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
         cd build && make -j$(nproc)
     - name: Run Unit Tests
       run: |
