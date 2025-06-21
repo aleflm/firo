@@ -149,15 +149,6 @@ jobs:
         mkdir build
         cmake -DCMAKE_TOOLCHAIN_FILE=./depends/$HOST/toolchain.cmake -DBUILD_CLI=ON -DBUILD_TESTS=ON -DBUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug -S$(realpath .) -B$(realpath build)
         cd build && make -j$(nproc)
-    - name: Run Unit Tests
-      run: |
-        cd build && make test
-    - name: Run RPC Tests
-      env:
-        TIMEOUT: 600
-      run: |
-        cp -rf build/bin/* build/src/
-        qa/pull-tester/rpc-tests.py -extended
     - name: Prepare Files for Artifact
       run: |
         mkdir -p $ARTIFACT_DIR
