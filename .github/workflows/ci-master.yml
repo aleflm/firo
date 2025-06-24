@@ -562,11 +562,14 @@ jobs:
         run: |
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
+          cd $ARTIFACT_DIR
+          mv *.tar.bz2 x86_64-linux-guix-binaries.tar.bz2 || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: x86_64-linux-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-binaries.tar.bz2
+          compression-level: 0
   build-guix-aarch64-linux-gnu:
     name: build-guix-aarch64-linux-gnu
     runs-on: ubuntu-22.04
@@ -595,11 +598,14 @@ jobs:
         run: |
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
+          cd $ARTIFACT_DIR
+          mv *.tar.bz2 aarch64-linux-guix-binaries.tar.bz2 || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: aarch64-linux-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}
+          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-binaries.tar.bz2
+          compression-level: 0
   build-guix-x86_64-w64-mingw32:
     name: build-guix-x86_64-w64-mingw32
     runs-on: ubuntu-22.04
@@ -628,11 +634,21 @@ jobs:
         run: |
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
-      - name: Upload Artifact
+          cd $ARTIFACT_DIR
+          mv *.zip x86_64-windows-guix-binaries.zip || true
+          mv *.exe x86_64-windows-guix-installer.exe || true
+      - name: Upload Windows ZIP
         uses: actions/upload-artifact@v4
         with:
           name: x86_64-windows-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-windows-guix-binaries.zip
+          compression-level: 0
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-windows-guix-installer
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-windows-guix-installer.exe
+          compression-level: 0
   build-guix-arm64-apple-darwin:
     name: build-guix-arm64-apple-darwin
     runs-on: ubuntu-22.04
@@ -675,11 +691,14 @@ jobs:
         run: |
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
+          cd $ARTIFACT_DIR
+          mv *.tar.bz2 arm64-mac-guix-binaries.tar.bz2 || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: arm64-mac-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}
+          path: ${{ env.ARTIFACT_DIR }}/arm64-mac-guix-binaries.tar.bz2
+          compression-level: 0
   build-guix-x86_64-apple-darwin:
     name: build-guix-x86_64-apple-darwin
     runs-on: ubuntu-22.04
@@ -722,8 +741,11 @@ jobs:
         run: |
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
+          cd $ARTIFACT_DIR
+          mv *.tar.bz2 x86_64-apple-darwin.tar.bz2 || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: x86_64-mac-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-apple-darwin.tar.bz2
+          compression-level: 0
