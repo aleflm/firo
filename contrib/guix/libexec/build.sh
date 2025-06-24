@@ -323,7 +323,7 @@ mkdir -p "$DISTSRC"
     # Setup the directory where our Firo build for HOST will be
     # installed. This directory will also later serve as the input for our
     # binary tarballs.
-    INSTALLPATH="${DISTSRC}/installed/${DISTNAME}"
+    INSTALLPATH="${DISTSRC}/installed"
     mkdir -p "${INSTALLPATH}"
 
     # Ensure rpath in the resulting binaries is empty
@@ -365,7 +365,7 @@ mkdir -p "$DISTSRC"
             make -C build package -j$(nproc)
             # Move NSIS installer if created
             if compgen -G "build/*.exe" > /dev/null; then
-                mv build/*.exe "${OUTDIR}/${DISTNAME}-win64-setup-unsigned.exe"
+                mv build/*.exe "${OUTDIR}/${DISTNAME}-win64-setup.exe"
             fi
             ;;
         *)
@@ -382,6 +382,9 @@ mkdir -p "$DISTSRC"
             cp "${DISTSRC}/README.md" "${INSTALLPATH}/"
             ;;
     esac
+
+    # Install built files to INSTALLPATH
+    make -C build install DESTDIR="${INSTALLPATH}" -j$(nproc) ${V:+V=1}
 
     (
         cd installed
