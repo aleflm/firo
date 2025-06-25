@@ -36,7 +36,6 @@ Required environment variables as seen inside the container:
     JOBS: ${JOBS:?not set}
     DISTSRC: ${DISTSRC:?not set}
     OUTDIR: ${OUTDIR:?not set}
-    OPTIONS: ${OPTIONS}
 EOF
 
 ACTUAL_OUTDIR="${OUTDIR}"
@@ -352,14 +351,15 @@ mkdir -p "$DISTSRC"
       -DCMAKE_INSTALL_PREFIX="${INSTALLPATH}" \
       -DCMAKE_EXE_LINKER_FLAGS="${HOST_LDFLAGS}" \
       -DCMAKE_SHARED_LINKER_FLAGS="${HOST_LDFLAGS}" \
-      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+      -DENABLE_CRASH_HOOKS=ON \
       ${CMAKEFLAGS}
 
-    make -C build --jobs="$JOBS" -j$(nproc)
+    make -C build --jobs="$JOBS"
 
     mkdir -p "$OUTDIR"
 
-    # Packaging for windows (generating installer)
+    # Make the os-specific installers
     case "$HOST" in
         *mingw*)
             make -C build package -j$(nproc)
@@ -382,9 +382,17 @@ mkdir -p "$DISTSRC"
             cp "${DISTSRC}/README.md" "${INSTALLPATH}/"
             ;;
     esac
+    # Install built Bitcoin Core to $INSTALLPATH
+    case "$HOST" in
+        *darwin*)
+            make install/strip DESTDIR="${INSTALLPATH}" ${V:+V=1}
+            ;;
+        *)
+            make install DESTDIR="${INSTALLPATH}" ${V:+V=1}
+            ;;
+    esac
 
-    # Install built files to INSTALLPATH
-    make -C build install -j$(nproc) ${V:+V=1}
+    # testing
 
     (
         cd "${INSTALLPATH}"
