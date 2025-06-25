@@ -558,6 +558,14 @@ jobs:
           CORES=$(nproc)
           env HOSTS="${HOST}" \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES" ./contrib/guix/guix-build
+      - name: Debug - List files
+        run: |
+          echo "Files in guix-build-*/output/${HOST}*:"
+          ls -la ./guix-build-*/output/${HOST}* || true
+          echo "Files in ARTIFACT_DIR after copy:"
+          ls -la $ARTIFACT_DIR/ || true
+          echo "All files in ARTIFACT_DIR (recursive):"
+          find $ARTIFACT_DIR -type f || true
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
@@ -594,6 +602,14 @@ jobs:
           CORES=$(nproc)
           env HOSTS="${HOST}" \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES" ./contrib/guix/guix-build
+      - name: Debug - List files
+        run: |
+          echo "Files in guix-build-*/output/${HOST}*:"
+          ls -la ./guix-build-*/output/${HOST}* || true
+          echo "Files in ARTIFACT_DIR after copy:"
+          ls -la $ARTIFACT_DIR/ || true
+          echo "All files in ARTIFACT_DIR (recursive):"
+          find $ARTIFACT_DIR -type f || true
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
@@ -630,6 +646,14 @@ jobs:
           CORES=$(nproc)
           env HOSTS="${HOST}" \
             ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES" ./contrib/guix/guix-build
+      - name: Debug - List files
+        run: |
+          echo "Files in guix-build-*/output/${HOST}*:"
+          ls -la ./guix-build-*/output/${HOST}* || true
+          echo "Files in ARTIFACT_DIR after copy:"
+          ls -la $ARTIFACT_DIR/ || true
+          echo "All files in ARTIFACT_DIR (recursive):"
+          find $ARTIFACT_DIR -type f || true
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
@@ -687,6 +711,14 @@ jobs:
           env HOSTS="${HOST}" \
               SDK_PATH="$SDK_PATH" \
               ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES" ./contrib/guix/guix-build
+      - name: Debug - List files
+        run: |
+          echo "Files in guix-build-*/output/${HOST}*:"
+          ls -la ./guix-build-*/output/${HOST}* || true
+          echo "Files in ARTIFACT_DIR after copy:"
+          ls -la $ARTIFACT_DIR/ || true
+          echo "All files in ARTIFACT_DIR (recursive):"
+          find $ARTIFACT_DIR -type f || true
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
@@ -737,6 +769,14 @@ jobs:
           env HOSTS="${HOST}" \
               SDK_PATH="$SDK_PATH" \
               ADDITIONAL_GUIX_COMMON_FLAGS="--cores=$CORES --max-jobs=$CORES" ./contrib/guix/guix-build
+      - name: Debug - List files
+        run: |
+          echo "Files in guix-build-*/output/${HOST}*:"
+          ls -la ./guix-build-*/output/${HOST}* || true
+          echo "Files in ARTIFACT_DIR after copy:"
+          ls -la $ARTIFACT_DIR/ || true
+          echo "All files in ARTIFACT_DIR (recursive):"
+          find $ARTIFACT_DIR -type f || true
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
