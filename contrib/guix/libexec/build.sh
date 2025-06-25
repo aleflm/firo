@@ -384,25 +384,25 @@ mkdir -p "$DISTSRC"
     esac
 
     # Install built files to INSTALLPATH
-    make -C build install DESTDIR="${INSTALLPATH}" -j$(nproc) ${V:+V=1}
+    make -C build install -j$(nproc) ${V:+V=1}
 
     (
-        cd installed
+        cd "${INSTALLPATH}"
 
         # Finally, deterministically produce binary tarballs ready for release
         case "$HOST" in
             *mingw*)
-                find "${DISTNAME}/" -print0 \
+                find . -print0 \
                     | xargs -0r touch --no-dereference --date="@${SOURCE_DATE_EPOCH}"
-                find "${DISTNAME}/" \
+                find . \
                     | sort \
                     | zip -X@ "${OUTDIR}/${DISTNAME}.zip" \
                     || ( rm -f "${OUTDIR}/${DISTNAME}.zip" && exit 1 )
                 ;;
             *)
-                find "${DISTNAME}/" -print0 \
+                find . -print0 \
                     | xargs -0r touch --no-dereference --date="@${SOURCE_DATE_EPOCH}"
-                find "${DISTNAME}/" \
+                find . \
                     | sort \
                     | tar --no-recursion --owner=0 --group=0 -c -T - \
                     | bzip2 -9 > "${OUTDIR}/${DISTNAME}.tar.bz2" \
