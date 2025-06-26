@@ -667,10 +667,23 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Free Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo rm -rf /var/log/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          echo "Disk space now: $(df -h / | tail -1 | awk '{print $4}')"
       - name: Install Guix
         run: |
           sudo apt-get update
-          sudo apt-get install -y guix
+          sudo apt-get install -y guix g++-mingw-w64-x86-64 gcc-mingw-w64-x86-64
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
       - name: Run Guix Build
         run: |
