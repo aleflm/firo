@@ -413,10 +413,31 @@ mkdir -p "$DISTSRC"
             make -C build deploydir ${V:+V=1}
             mkdir -p "unsigned-app-${HOST}"
             cp  --target-directory="unsigned-app-${HOST}" \
-                osx_volname \
-                contrib/macdeploy/detached-sig-{apply,create}.sh \
-                "${BASEPREFIX}/${HOST}"/native/bin/dmg
-            mv --target-directory="unsigned-app-${HOST}" dist
+                build/osx_volname \
+                contrib/macdeploy/detached-sig-{apply,create}.sh
+            
+            # Use dmg from Guix environment instead of depends
+            DMG_BIN=$(which dmg 2>/dev/null || find /gnu/store -name "dmg" -type f -executable | head -1)
+
+            # Check for dmg binary in order of preference
+            if [ -f "${BASEPREFIX}/${HOST}/native/bin/dmg" ]; then
+                cp "${BASEPREFIX}/${HOST}/native/bin/dmg" "unsigned-app-${HOST}/"
+                echo "Using dmg from depends: ${BASEPREFIX}/${HOST}/native/bin/dmg"
+            elif [ -n "$DMG_BIN" ] && [ -f "$DMG_BIN" ]; then
+                cp "$DMG_BIN" "unsigned-app-${HOST}/"
+                echo "Using dmg from Guix: $DMG_BIN"
+            else
+                # Try to find it elsewhere as last resort
+                LOCAL_DMG=$(find . -name "dmg" -type f -executable | head -1)
+                if [ -n "$LOCAL_DMG" ]; then
+                    cp "$LOCAL_DMG" "unsigned-app-${HOST}/"
+                    echo "Found dmg locally: $LOCAL_DMG"
+                else
+                    echo "No dmg binary found anywhere - continuing without it"
+                fi
+            fi
+            
+            mv --target-directory="unsigned-app-${HOST}" build/dist
             (
                 cd "unsigned-app-${HOST}"
                 find . -print0 \
