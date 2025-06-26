@@ -387,13 +387,23 @@ mkdir -p "$DISTSRC"
             cp "${DISTSRC}/README.md" "${INSTALLPATH}/"
             ;;
     esac
-    # Install built Bitcoin Core to $INSTALLPATH
+
+    # Install without stripping for all platforms
+    make -C build install ${V:+V=1}
+
+    # Then strip manually only for Darwin to avoid the llvm-strip -u flag issue
     case "$HOST" in
         *darwin*)
-            make -C build install/strip ${V:+V=1}
+            # Try different strip commands until one works
+            if command -v "${HOST}-strip" >/dev/null 2>&1; then
+                find "${INSTALLPATH}" -type f -executable -exec "${HOST}-strip" {} + 2>/dev/null || true
+            elif command -v llvm-strip >/dev/null 2>&1; then
+                find "${INSTALLPATH}" -type f -executable -exec llvm-strip {} + 2>/dev/null || true
+            else
+                echo "No compatible strip command found for Darwin"
+            fi
             ;;
         *)
-            make -C build install ${V:+V=1}
             ;;
     esac
 
