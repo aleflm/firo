@@ -561,20 +561,38 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}/*:"
-          ls -la ./guix-build-*/output/${HOST}/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la . || true
-          mv *.tar.bz2 x86_64-linux-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
-      - name: Upload Artifact
+          mv *-gnu.tar.gz x86_64-linux-guix-release-binaries.tar.gz || true
+          mv *-gnu-debug.tar.gz x86_64-linux-guix-debug-symbols.tar.gz || true
+          mv SHA256SUMS.part x86_64-linux-guix-SHA256SUMS.part || true
+      - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-linux-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-binaries.tar.bz2
+          name: x86_64-linux-guix-release-binaries
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-release-binaries.tar.gz
+          compression-level: 0
+      - name: Upload Debug Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-linux-guix-debug-binaries
+          path: |
+            ${{ env.ARTIFACT_DIR }}/firo-cli
+            ${{ env.ARTIFACT_DIR }}/firo-qt
+            ${{ env.ARTIFACT_DIR }}/firo-tx
+            ${{ env.ARTIFACT_DIR }}/firod
+          compression-level: 6
+      - name: Upload Debug Symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-linux-guix-debug-symbols
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-debug-symbols.tar.gz
+          compression-level: 0
+      - name: Upload Check Sums
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-linux-guix-checksums
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-SHA256SUMS.part
           compression-level: 0
   build-guix-aarch64-linux-gnu:
     name: build-guix-aarch64-linux-gnu
@@ -603,21 +621,38 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}/*:"
-          ls -la ./guix-build-*/output/${HOST}/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la . || true
-          mv *.tar.bz2 aarch64-linux-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
-      - name: Upload Artifact
+          mv *-gnu.tar.gz aarch64-linux-guix-release-binaries.tar.gz || true
+          mv *-gnu-debug.tar.gz aarch64-linux-guix-debug-symbols.tar.gz || true
+          mv SHA256SUMS.part aarch64-linux-guix-SHA256SUMS.part || true
+      - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: aarch64-linux-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-binaries.tar.bz2
+          name: aarch64-linux-guix-release-binaries
+          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-release-binaries.tar.gz
           compression-level: 0
+      - name: Upload Debug Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: aarch64-linux-guix-debug-binaries
+          path: |
+            ${{ env.ARTIFACT_DIR }}/firo-cli
+            ${{ env.ARTIFACT_DIR }}/firo-qt
+            ${{ env.ARTIFACT_DIR }}/firo-tx
+            ${{ env.ARTIFACT_DIR }}/firod
+          compression-level: 6
+      - name: Upload Debug Symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: aarch64-linux-guix-debug-symbols
+          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-debug-symbols.tar.gz
+          compression-level: 0
+      - name: Upload Check Sums
+        uses: actions/upload-artifact@v4
+        with:
+          name: aarch64-linux-guix-checksums
+          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-SHA256SUMS.part
   build-guix-x86_64-w64-mingw32:
     name: build-guix-x86_64-w64-mingw32
     runs-on: ubuntu-22.04
