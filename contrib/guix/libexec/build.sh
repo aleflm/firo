@@ -370,7 +370,7 @@ mkdir -p "$DISTSRC"
             make -C build package -j$(nproc)
             # Move NSIS installer if created
             if compgen -G "build/*.exe" > /dev/null; then
-                mv build/*.exe "${OUTDIR}/${DISTNAME}-win64-setup.exe"
+                mv build/*.exe "${OUTDIR}/${DISTNAME}-win64-setup-unsigned.exe"
             fi
             ;;
         *)
@@ -390,10 +390,10 @@ mkdir -p "$DISTSRC"
     # Install built Bitcoin Core to $INSTALLPATH
     case "$HOST" in
         *darwin*)
-            make -C build install/strip DESTDIR="${INSTALLPATH}" ${V:+V=1}
+            make -C build install/strip ${V:+V=1}
             ;;
         *)
-            make -C build install DESTDIR="${INSTALLPATH}" ${V:+V=1}
+            make -C build install ${V:+V=1}
             ;;
     esac
 
@@ -426,58 +426,48 @@ mkdir -p "$DISTSRC"
         find . -name "lib*.a" -delete
 
         # Prune pkg-config files
-        rm -rf "${DISTNAME}/lib/pkgconfig"
+        rm -rf "./lib/pkgconfig"
 
         case "$HOST" in
             *darwin*) ;;
             *)
                 # Split binaries and libraries from their debug symbols
                 {
-                    find "${DISTNAME}/bin" -type f -executable -print0
-                } | xargs -0 -n1 -P"$JOBS" -I{} "${DISTSRC}/contrib/devtools/split-debug.sh" {} {} {}.dbg
+                    find "./bin" -type f -executable -print0
+                } | xargs -0 -P"$JOBS" -I{} "${DISTSRC}/build/split-debug.sh" {} {} {}.dbg
                 ;;
         esac
-
-        case "$HOST" in
-            *mingw*)
-                cp "${DISTSRC}/doc/README_windows.txt" "${DISTNAME}/readme.txt"
-                ;;
-            *linux*)
-                cp "${DISTSRC}/README.md" "${DISTNAME}/"
-                ;;
-        esac
-
         # Finally, deterministically produce {non-,}debug binary tarballs ready
         # for release
         case "$HOST" in
             *mingw*)
-                find "${DISTNAME}" -not -name "*.dbg" -print0 \
+                find . -not -name "*.dbg" -print0 \
                     | xargs -0r touch --no-dereference --date="@${SOURCE_DATE_EPOCH}"
-                find "${DISTNAME}" -not -name "*.dbg" \
+                find . -not -name "*.dbg" \
                     | sort \
                     | zip -X@ "${OUTDIR}/${DISTNAME}-${HOST//x86_64-w64-mingw32/win64}.zip" \
                     || ( rm -f "${OUTDIR}/${DISTNAME}-${HOST//x86_64-w64-mingw32/win64}.zip" && exit 1 )
-                find "${DISTNAME}" -name "*.dbg" -print0 \
+                find . -name "*.dbg" -print0 \
                     | xargs -0r touch --no-dereference --date="@${SOURCE_DATE_EPOCH}"
-                find "${DISTNAME}" -name "*.dbg" \
+                find . -name "*.dbg" \
                     | sort \
                     | zip -X@ "${OUTDIR}/${DISTNAME}-${HOST//x86_64-w64-mingw32/win64}-debug.zip" \
                     || ( rm -f "${OUTDIR}/${DISTNAME}-${HOST//x86_64-w64-mingw32/win64}-debug.zip" && exit 1 )
                 ;;
             *linux*)
-                find "${DISTNAME}" -not -name "*.dbg" -print0 \
+                find . -not -name "*.dbg" -print0 \
                     | sort --zero-terminated \
                     | tar --create --no-recursion --mode='u+rw,go+r-w,a+X' --null --files-from=- \
                     | gzip -9n > "${OUTDIR}/${DISTNAME}-${HOST}.tar.gz" \
                     || ( rm -f "${OUTDIR}/${DISTNAME}-${HOST}.tar.gz" && exit 1 )
-                find "${DISTNAME}" -name "*.dbg" -print0 \
+                find . -name "*.dbg" -print0 \
                     | sort --zero-terminated \
                     | tar --create --no-recursion --mode='u+rw,go+r-w,a+X' --null --files-from=- \
                     | gzip -9n > "${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz" \
                     || ( rm -f "${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz" && exit 1 )
                 ;;
             *darwin*)
-                find "${DISTNAME}" -print0 \
+                find . -print0 \
                     | sort --zero-terminated \
                     | tar --create --no-recursion --mode='u+rw,go+r-w,a+X' --null --files-from=- \
                     | gzip -9n > "${OUTDIR}/${DISTNAME}-${HOST//x86_64-apple-darwin19/osx64}.tar.gz" \

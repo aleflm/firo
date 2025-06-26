@@ -32,6 +32,7 @@
              (guix git-download)
              ((guix licenses) #:prefix license:)
              (guix packages)
+              ((gnu packages moreutils) #:select (moreutils))
              ((guix utils) #:select (cc-for-target substitute-keyword-arguments)))
 
 (define-syntax-rule (search-our-patches file-name ...)
@@ -250,6 +251,7 @@ chain for " target " development."))
         patch
         gawk
         sed
+        moreutils
         ;; Compression and archiving
         tar
         gzip
