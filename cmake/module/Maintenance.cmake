@@ -116,7 +116,7 @@ function(add_macos_deploy_target)
       COMMAND ${CMAKE_COMMAND} --install ${PROJECT_BINARY_DIR} --config $<CONFIG> --component GUI --prefix ${macos_app}/Contents/MacOS
       COMMAND ${CMAKE_COMMAND} -E rename ${macos_app}/Contents/MacOS/bin/$<TARGET_FILE_NAME:firo-qt> ${macos_app}/Contents/MacOS/Firo-Qt
       COMMAND ${CMAKE_COMMAND} -E rm -rf ${macos_app}/Contents/MacOS/bin
-      COMMAND ${STRIP_COMMAND} ${macos_app}/Contents/MacOS/Firo-Qt 2>/dev/null || true
+      COMMAND ${STRIP_COMMAND} ${macos_app}/Contents/MacOS/Firo-Qt || true
       VERBATIM
     )
 
