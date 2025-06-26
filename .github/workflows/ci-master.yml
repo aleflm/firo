@@ -561,15 +561,9 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}*:"
-          ls -la ./guix-build-*/output/${HOST}* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
           mv *.tar.bz2 x86_64-linux-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -603,15 +597,9 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}*:"
-          ls -la ./guix-build-*/output/${HOST}* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
           mv *.tar.bz2 aarch64-linux-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -645,16 +633,10 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}*:"
-          ls -la ./guix-build-*/output/${HOST}* || true
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la $ARTIFACT_DIR/ || true
-          echo "All files in ARTIFACT_DIR (recursive):"
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
+          cd $ARTIFACT_DIR
           mv *.zip x86_64-windows-guix-binaries.zip || true
           mv *.exe x86_64-windows-guix-installer.exe || true
-          find $ARTIFACT_DIR -type f || true
-          cd $ARTIFACT_DIR
       - name: Upload Windows ZIP
         uses: actions/upload-artifact@v4
         with:
@@ -708,15 +690,9 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}*:"
-          ls -la ./guix-build-*/output/${HOST}* || true
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la $ARTIFACT_DIR/ || true
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
           mv *.tar.bz2 arm64-mac-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -764,15 +740,9 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}*:"
-          ls -la ./guix-build-*/output/${HOST}* || true
-          cp -r ./guix-build-*/output/${HOST}* $ARTIFACT_DIR/ || true
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la $ARTIFACT_DIR/ || true
+          cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
           mv *.tar.bz2 x86_64-apple-darwin.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
