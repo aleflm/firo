@@ -548,6 +548,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Free Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo rm -rf /var/log/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          echo "Disk space now: $(df -h / | tail -1 | awk '{print $4}')"
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -608,6 +621,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Free Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo rm -rf /var/log/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          echo "Disk space now: $(df -h / | tail -1 | awk '{print $4}')"
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -693,27 +719,42 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}/*:"
-          ls -la ./guix-build-*/output/${HOST}/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la . || true
-          mv *.zip x86_64-windows-guix-binaries.zip || true
-          mv *.exe x86_64-windows-guix-installer.exe || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
-      - name: Upload Windows ZIP
+          mv *-win-unsigned.tar.gz x86_64-win64-guix-unsigned-binaries.tar.gz || true
+          mv *-win64-debug.zip x86_64-win64-guix-debug-symbols.zip || true  
+          mv *-win64-setup-unsigned.exe x86_64-win64-guix-installer-unsigned.exe || true
+          mv *-win64.zip x86_64-win64-guix-release-binaries.zip || true
+          mv SHA256SUMS.part x86_64-wind64-guix-SHA256SUMS.part || true
+      - name: Upload Windows Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-windows-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-windows-guix-binaries.zip
+          name: x86_64-win64-guix-binaries
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-release-binaries.zip
           compression-level: 0
-      - name: Upload Windows Installer
+      - name: Upload Windows Debug Symbols  
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-windows-guix-installer
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-windows-guix-installer.exe
+          name: x86_64-win64-guix-debug
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-debug-symbols.zip
+          compression-level: 0
+      - name: Upload Windows Installer (Unsigned)
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-win64-guix-installer
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-installer-unsigned.exe
+          compression-level: 0
+      - name: Upload Windows Unsigned Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-win64-guix-unsigned
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-unsigned-binaries.tar.gz
+          compression-level: 0
+      - name: Upload Windows Checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-win64-guix-checksums
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-SHA256SUMS.part
           compression-level: 0
   build-guix-arm64-apple-darwin:
     name: build-guix-arm64-apple-darwin
@@ -739,6 +780,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Free Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo rm -rf /var/log/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          echo "Disk space now: $(df -h / | tail -1 | awk '{print $4}')"
       - name: Install Guix
         run: |
           sudo apt-get update
@@ -795,6 +849,19 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
+      - name: Free Disk Space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
+          sudo rm -rf /var/cache/*
+          sudo rm -rf /var/log/*
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          echo "Disk space now: $(df -h / | tail -1 | awk '{print $4}')"
       - name: Install Guix
         run: |
           sudo apt-get update
