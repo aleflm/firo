@@ -578,7 +578,7 @@ jobs:
           cd $ARTIFACT_DIR
           mv *-gnu.tar.gz x86_64-linux-guix-release-binaries.tar.gz || true
           mv *-gnu-debug.tar.gz x86_64-linux-guix-debug-symbols.tar.gz || true
-          mv SHA256SUMS.part x86_64-linux-guix-SHA256SUMS.part || true
+          mv SHA256SUMS.part x86_64-linux-guix-checksums-sha256 || true
       - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
         with:
@@ -606,7 +606,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: x86_64-linux-guix-checksums
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-SHA256SUMS.part
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-linux-guix-checksums-sha256
           compression-level: 0
   build-guix-aarch64-linux-gnu:
     name: build-guix-aarch64-linux-gnu
@@ -652,7 +652,7 @@ jobs:
           cd $ARTIFACT_DIR
           mv *-gnu.tar.gz aarch64-linux-guix-release-binaries.tar.gz || true
           mv *-gnu-debug.tar.gz aarch64-linux-guix-debug-symbols.tar.gz || true
-          mv SHA256SUMS.part aarch64-linux-guix-SHA256SUMS.part || true
+          mv SHA256SUMS.part aarch64-linux-guix-checksums-sha256 || true
       - name: Upload Release Binaries
         uses: actions/upload-artifact@v4
         with:
@@ -680,7 +680,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: aarch64-linux-guix-checksums
-          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-SHA256SUMS.part
+          path: ${{ env.ARTIFACT_DIR }}/aarch64-linux-guix-checksums-sha256
   build-guix-x86_64-w64-mingw32:
     name: build-guix-x86_64-w64-mingw32
     runs-on: ubuntu-22.04
@@ -723,11 +723,11 @@ jobs:
           mkdir -p $ARTIFACT_DIR
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
-          mv *-win-unsigned.tar.gz x86_64-win64-guix-unsigned-binaries.tar.gz || true
+          mv *-win-unsigned.tar.gz x86_64-win64-guix-setup-sign-bundle.tar.gz || true
           mv *-win64-debug.zip x86_64-win64-guix-debug-symbols.zip || true  
           mv *-win64-setup-unsigned.exe x86_64-win64-guix-installer-unsigned.exe || true
           mv *-win64.zip x86_64-win64-guix-release-binaries.zip || true
-          mv SHA256SUMS.part x86_64-wind64-guix-SHA256SUMS.part || true
+          mv SHA256SUMS.part x86_64-wind64-guix-checksums-sha256 || true
       - name: Upload Windows Release Binaries
         uses: actions/upload-artifact@v4
         with:
@@ -746,17 +746,17 @@ jobs:
           name: x86_64-win64-guix-installer
           path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-installer-unsigned.exe
           compression-level: 0
-      - name: Upload Windows Unsigned Binaries
+      - name: Upload Windows Setup Sign Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-win64-guix-unsigned
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-unsigned-binaries.tar.gz
+          name: x86_64-win64-guix-setup-sign-bundle
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-setup-sign-bundle.tar.gz
           compression-level: 0
       - name: Upload Windows Checksums
         uses: actions/upload-artifact@v4
         with:
           name: x86_64-win64-guix-checksums
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-SHA256SUMS.part
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-checksums-sha256
           compression-level: 0
   build-guix-arm64-apple-darwin:
     name: build-guix-arm64-apple-darwin
@@ -812,25 +812,42 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}/*:"
-          ls -la ./guix-build-*/output/${HOST}/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
-          echo "Files in guix-build-*/installed/${HOST}/*:"
-          ls -la ./guix-build-*/installed/${HOST}/* || true
-          echo "Files in guix-build-*/installed/*:"
-          ls -la ./guix-build-*/installed/* || true
           cd $ARTIFACT_DIR
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la . || true
-          mv *.tar.bz2 arm64-mac-guix-binaries.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
-      - name: Upload Artifact
+          mv *-osx-unsigned.tar.gz arm64-apple-darwin-sign-bundle.tar.gz || true
+          mv Firo-Core.zip arm64-apple-darwin-unsigned.zip || true
+          mv SHA256SUMS.part arm64-apple-darwin-checksums-sha256 || true
+          tar xf firo*x86_64-apple-darwin.tar.gz --strip-components=1 || true
+          mv share/man . || true
+      - name: Upload MacOS Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: arm64-mac-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}/arm64-mac-guix-binaries.tar.bz2
+          name: arm64-apple-darwin-release-binaries
+          path: |
+            ${{ env.ARTIFACT_DIR }}/firo-cli
+            ${{ env.ARTIFACT_DIR }}/firo-qt
+            ${{ env.ARTIFACT_DIR }}/firo-tx
+            ${{ env.ARTIFACT_DIR }}/firod
+            ${{ env.ARTIFACT_DIR }}/README.md
+            ${{ env.ARTIFACT_DIR }}/man
+          compression-level: 6
+      - name: Upload MacOS Sign Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: arm64-apple-darwin-sign-bundle
+          path: ${{ env.ARTIFACT_DIR }}/arm64-apple-darwin-sign-bundle.tar.gz
           compression-level: 0
+      - name: Upload MacOS Unsigned Zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: arm64-apple-darwin-unsigned-zip
+          path: ${{ env.ARTIFACT_DIR }}/arm64-apple-darwin-unsigned.zip
+          compression-level: 0
+      - name: Upload Check Sums
+        uses: actions/upload-artifact@v4
+        with:
+          name: arm64-apple-darwin-checksums
+          path: ${{ env.ARTIFACT_DIR }}/arm64-apple-darwin-checksums-sha256
   build-guix-x86_64-apple-darwin:
     name: build-guix-x86_64-apple-darwin
     runs-on: ubuntu-22.04
@@ -885,22 +902,39 @@ jobs:
       - name: Prepare Files for Artifact
         run: |
           mkdir -p $ARTIFACT_DIR
-          echo "Files in guix-build-*/output/${HOST}/*:"
-          ls -la ./guix-build-*/output/${HOST}/* || true
-          echo "Files in guix-build-*/installed/${HOST}/*:"
-          ls -la ./guix-build-*/installed/${HOST}/* || true
-          echo "Files in guix-build-*/installed/*:"
-          ls -la ./guix-build-*/installed/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
-          echo "Files in ARTIFACT_DIR after copy:"
-          ls -la . || true
-          mv *.tar.bz2 x86_64-apple-darwin.tar.bz2 || true
-          echo "All files in ARTIFACT_DIR (recursive):"
-          find $ARTIFACT_DIR -type f || true
-      - name: Upload Artifact
+          mv *-osx-unsigned-tar.gz x86_64-apple-darwin-sign-bundle.tar.gz || true
+          mv Firo-Core.zip x86_64-apple-darwin-unsigned.zip || true
+          mv SHA256SUMS.part x86_64-apple-darwin-checksums-sha256 || true
+          tar xf firo*x86_64-apple-darwin.tar.gz --strip-components=1 || true
+          mv share/man . || true
+      - name: Upload MacOS Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-mac-guix-binaries
-          path: ${{ env.ARTIFACT_DIR }}/x86_64-apple-darwin.tar.bz2
+          name: x86_64-apple-darwin-release-binaries
+          path: |
+            ${{ env.ARTIFACT_DIR }}/firo-cli
+            ${{ env.ARTIFACT_DIR }}/firo-qt
+            ${{ env.ARTIFACT_DIR }}/firo-tx
+            ${{ env.ARTIFACT_DIR }}/firod
+            ${{ env.ARTIFACT_DIR }}/README.md
+            ${{ env.ARTIFACT_DIR }}/man
+          compression-level: 6
+      - name: Upload MacOS Sign Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-apple-darwin-sign-bundle
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-apple-darwin-sign-bundle.tar.gz
           compression-level: 0
+      - name: Upload MacOS Unsigned Zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-apple-darwin-unsigned-zip
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-apple-darwin-unsigned.zip
+          compression-level: 0
+      - name: Upload Check Sums
+        uses: actions/upload-artifact@v4
+        with:
+          name: x86_64-apple-darwin-checksums
+          path: ${{ env.ARTIFACT_DIR }}/x86_64-apple-darwin-checksums-sha256
