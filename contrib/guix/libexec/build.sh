@@ -381,10 +381,10 @@ mkdir -p "$DISTSRC"
     # Copy docs
     case "$HOST" in
         *mingw*)
-            cp "${DISTSRC}/doc/README_windows.txt" "${INSTALLPATH}/readme.txt"
+            cp "${DISTSRC}/doc/README_windows.txt" "${OUTDIR}/readme.txt"
             ;;
         *)
-            cp "${DISTSRC}/README.md" "${INSTALLPATH}/"
+            cp "${DISTSRC}/README.md" "${OUTDIR}/"
             ;;
     esac
 
@@ -469,7 +469,7 @@ mkdir -p "$DISTSRC"
             ;;
     esac
     (
-        cd installed
+        cd "${INSTALLPATH}"
 
         # Prune libtool and object archives
         find . -name "lib*.la" -delete
@@ -542,11 +542,21 @@ mkdir -p "$DISTSRC"
             ;;
     esac
 )  # $DISTSRC
+# Replace the problematic section with this safer version:
+if [ -n "$ACTUAL_OUTDIR" ]; then
+    rm -rf "$ACTUAL_OUTDIR"
+else
+    echo "ERROR: ACTUAL_OUTDIR is empty: '$ACTUAL_OUTDIR'"
+    exit 1
+fi
 
-rm -rf "$ACTUAL_OUTDIR"
-mv --no-target-directory "$OUTDIR" "$ACTUAL_OUTDIR" \
-    || ( rm -rf "$ACTUAL_OUTDIR" && exit 1 )
-
+if [ -n "$OUTDIR" ]; then
+    mv --no-target-directory "$OUTDIR" "$ACTUAL_OUTDIR" \
+        || ( rm -rf "$ACTUAL_OUTDIR" && exit 1 )
+else
+    echo "ERROR: OUTDIR is invalid: '$OUTDIR'"
+    exit 1
+fi
 (
     cd /outdir-base
     {
