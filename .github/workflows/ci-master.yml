@@ -813,6 +813,10 @@ jobs:
           echo "Files in guix-build-*/output/${HOST}/*:"
           ls -la ./guix-build-*/output/${HOST}/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
+          echo "Files in guix-build-*/installed/${HOST}/*:"
+          ls -la ./guix-build-*/installed/${HOST}/* || true
+          echo "Files in guix-build-*/installed/*:"
+          ls -la ./guix-build-*/installed/* || true
           cd $ARTIFACT_DIR
           echo "Files in ARTIFACT_DIR after copy:"
           ls -la . || true
@@ -881,6 +885,10 @@ jobs:
           mkdir -p $ARTIFACT_DIR
           echo "Files in guix-build-*/output/${HOST}/*:"
           ls -la ./guix-build-*/output/${HOST}/* || true
+          echo "Files in guix-build-*/installed/${HOST}/*:"
+          ls -la ./guix-build-*/installed/${HOST}/* || true
+          echo "Files in guix-build-*/installed/*:"
+          ls -la ./guix-build-*/installed/* || true
           cp -r ./guix-build-*/output/${HOST}/* $ARTIFACT_DIR/ || true
           cd $ARTIFACT_DIR
           echo "Files in ARTIFACT_DIR after copy:"
