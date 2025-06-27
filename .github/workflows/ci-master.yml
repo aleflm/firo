@@ -594,6 +594,7 @@ jobs:
             ${{ env.ARTIFACT_DIR }}/firo-qt
             ${{ env.ARTIFACT_DIR }}/firo-tx
             ${{ env.ARTIFACT_DIR }}/firod
+            ${{ env.ARTIFACT_DIR }}/README.md
           compression-level: 6
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
@@ -667,6 +668,7 @@ jobs:
             ${{ env.ARTIFACT_DIR }}/firo-qt
             ${{ env.ARTIFACT_DIR }}/firo-tx
             ${{ env.ARTIFACT_DIR }}/firod
+            ${{ env.ARTIFACT_DIR }}/README.md
           compression-level: 6
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
@@ -729,7 +731,7 @@ jobs:
       - name: Upload Windows Release Binaries
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64-win64-guix-binaries
+          name: x86_64-win64-guix-release-binaries
           path: ${{ env.ARTIFACT_DIR }}/x86_64-win64-guix-release-binaries.zip
           compression-level: 0
       - name: Upload Windows Debug Symbols  
