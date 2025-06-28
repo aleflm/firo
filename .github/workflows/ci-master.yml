@@ -789,12 +789,10 @@ jobs:
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
       - name: Download Dependencies
         run: make -C depends download
-      - name: Setup writable fontconfig cache
+      - name: Run Guix Build
         run: |
           export XDG_CACHE_HOME="$(mktemp -d)"
           mkdir -p "$XDG_CACHE_HOME/fontconfig"
-      - name: Run Guix Build
-        run: |
           CORES=$(nproc)
           export SDK_PATH="$(pwd)/depends/SDKs"
           env HOSTS="${HOST}" \
@@ -874,12 +872,10 @@ jobs:
           guix pull --url=https://codeberg.org/guix/guix-mirror --substitute-urls="http://git.savannah.gnu.org/git/guix.git http://hydra-guix-129.guix.gnu.org http://ci.guix.gnu.org"
       - name: Download Dependencies
         run: make -C depends download
-      - name: Setup writable fontconfig cache
+      - name: Run Guix Build
         run: |
           export XDG_CACHE_HOME="$(mktemp -d)"
           mkdir -p "$XDG_CACHE_HOME/fontconfig"
-      - name: Run Guix Build
-        run: |
           CORES=$(nproc)
           export SDK_PATH="$(pwd)/depends/SDKs"
           env HOSTS="${HOST}" \
