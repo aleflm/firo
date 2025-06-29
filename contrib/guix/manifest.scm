@@ -18,7 +18,7 @@
              (gnu packages ninja)
              (gnu packages pkg-config)
              ((gnu packages python) #:select (python-minimal))
-             ((gnu packages python-build) #:select (python-tomli python-poetry-core python-setuptools))
+             ((gnu packages python-build) #:select (python-tomli python-poetry-core))
              ((gnu packages python-crypto) #:select (python-asn1crypto))
              ((gnu packages tls) #:select (openssl))
              (gnu packages perl)
@@ -34,7 +34,6 @@
              ((guix licenses) #:prefix license:)
              (guix packages)
              ((guix utils) #:select (cc-for-target substitute-keyword-arguments)))
-
 
 (define-syntax-rule (search-our-patches file-name ...)
   "Return the list of absolute file names corresponding to each
@@ -248,11 +247,11 @@ chain for " target " development."))
         grep
         diffutils
         findutils
+        moreutils
         ;; File transformation
         patch
         gawk
         sed
-        moreutils
         ;; Compression and archiving
         tar
         gzip
