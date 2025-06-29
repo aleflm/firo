@@ -14,7 +14,6 @@
              ((gnu packages linux) #:select (linux-libre-headers-6.1))
              (gnu packages llvm)
              (gnu packages mingw)
-             (gnu packages moreutils)
              (gnu packages ninja)
              (gnu packages pkg-config)
              ((gnu packages python) #:select (python-minimal))
@@ -247,7 +246,6 @@ chain for " target " development."))
         grep
         diffutils
         findutils
-        moreutils
         ;; File transformation
         patch
         gawk
