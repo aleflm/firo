@@ -19,6 +19,7 @@
 #include "crypto/progpow.h"
 #include "httpserver.h"
 #include "httprpc.h"
+#include <cstdlib>
 #include "key.h"
 #include "validation.h"
 #include "miner.h"
@@ -45,6 +46,7 @@
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
+#include "wallet/db.h"
 #endif
 
 #include "activemasternode.h"
@@ -338,8 +340,16 @@ void Shutdown()
     delete pwalletMain;
     pwalletMain = NULL;
 #endif
+    // LogPrintf("%s: Shutting down database environment\n", __func__);
+    // bitdb.Close();
+    // LogPrintf("%s: Database environment shutdown completed\n", __func__);
+    
     globalVerifyHandle.reset();
     ECC_Stop();
+    // Force exit to avoid hanging on LevelDB background threads
+    // LevelDB's default environment singleton runs background threads that never terminate cleanly
+    // LevelDB's have an inifinite loop and never breaks, hence we need this exit to terminate EnvDB.
+    std::quick_exit(0);
     LogPrintf("%s: done\n", __func__);
 }
 
