@@ -132,6 +132,9 @@ sudo pacman -S git base-devel python cmake
 
 ## Build Firo
 
+### Prerequisites (macOS Specific)
+Ensure [Homebrew](https://brew.sh/) is installed as per the [macOS build guide](https://github.com/firoorg/firo/blob/master/doc/build-macos.md).
+
 1.  Download the source:
 
 ```sh
@@ -152,28 +155,33 @@ cd ..
 Headless (command-line only for servers etc.):
 
 ```sh
-cmake -B build --toolchain depends/$(depends/config.guess)/toolchain.cmake -DBUILD_GUI=OFF
-cmake --build build -j$(nproc)
+cd depends
+NO_QT=true make -j`nproc`
+cd ..
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=$(pwd)/depends/$(depends/config.guess)/toolchain.cmake \
+-DBUILD_GUI=OFF -DBUILD_CLI=ON
+cd build && make -j$(nproc)
 ```
 
 Or with GUI wallet as well:
 
 ```sh
-cmake -B build --toolchain depends/$(depends/config.guess)/toolchain.cmake
-cmake --build build -j$(nproc)
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=$(pwd)/depends/$(depends/config.guess)/toolchain.cmake \
+-DBUILD_GUI=OFF -DBUILD_CLI=ON
+cd build && make -j$(nproc)
 ```
 
 4.  *(optional)* It is recommended to build and run the unit tests:
 
 ```sh
-cmake -B build --toolchain depends/$(depends/config.guess)/toolchain.cmake -DBUILD_TESTS=ON
-cmake --build build -j$(nproc)
-cd build && make test
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=$(pwd)/depends/$(depends/config.guess)/toolchain.cmake \
+-DBUILD_TESTS=ON -DBUILD_GUI=OFF -DBUILD_CLI=ON
+cd build && make -j$(nproc)
+make test
 ```
 
 If the build succeeded, binaries will be generated in `build/bin/`: `firod`, `firo-cli`, and if GUI is enabled, `firo-qt`.
-make -j$(nproc)
-```
+
 #### 3. Run GUI Client
 
 ```
@@ -195,31 +203,35 @@ make -j$(nproc)
 
 ### Supported Cross-Compilation Targets
 
+To build for other platforms, specify the `HOST` variable when building dependencies:
 | Host Target              | Platform                  |
 |--------------------------|---------------------------|
-## Cross-Compilation
-
-To build for other platforms, specify the `HOST` variable when building dependencies:
-
-| HOST Platform           | Description               |
-|--------------------------|---------------------------|
-| `x86_64-pc-linux-gnu`   | Linux 64-bit (default)   |
+| `x86_64-pc-linux-gnu`    | Linux 64-bit (default)    |
 | `x86_64-w64-mingw32`     | Windows 64-bit            |
 | `aarch64-apple-darwin`   | macOS                     |
 | `arm-linux-gnueabihf`    | Linux ARM 32-bit          |
 | `aarch64-linux-gnu`      | Linux ARM 64-bit          |
 
 #### Usage Example:
+1.  Build dependencies:
+
 ```bash
 # Build dependencies for Windows 64-bit
 cd depends
 make HOST=x86_64-w64-mingw32 -j$(nproc)
 cd ..
+```
+2.  Configure and build Firo:
+```bash
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=$(pwd)/depends/x86_64-w64-mingw32/toolchain.cmake \
+  -DBUILD_TESTS=ON -DBUILD_CLI=ON -DBUILD_GUI=ON \
+cd build && make -j$(nproc)
+```
 
-# Configure and build
-cmake -B build --toolchain depends/x86_64-w64-mingw32/toolchain.cmake
-cmake --build build -j$(nproc)
-``` 
+### Notes
+ * The toolchain path in `CMAKE_TOOLCHAIN_FILE`must match your target architecture. 
+ * `BUILD_TX` is automatically enabled if `BUILD_CLI=ON` is enabled. 
+
 
 ## macOS Build Instructions and Notes
 
@@ -239,7 +251,7 @@ Now that you have your self-built or precompiled binaries, it's time to run Firo
 
 # Install Firo
 
-After building with CMake, you can generate installation packages with `cmake --build build --target package`. Once you run this command, you should have installation packages in your build directory. 
+After building with `CMake`, generate `.sh` file with `make package`. Once you run `make package` you should have `./FiroCore-VERSION_MAJOR.VERSION_MINOR.VERSION_REVISION-Linux.sh` in your build directory. 
 
 For example, you can install `Firo` on your `/usr/bin` with: 
 ```
