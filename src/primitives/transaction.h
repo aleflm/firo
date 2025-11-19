@@ -51,13 +51,16 @@ public:
     COutPoint() { SetNull(); }
     COutPoint(uint256 hashIn, uint32_t nIn) { hash = hashIn; n = nIn; }
 
-    ADD_SERIALIZE_METHODS;
+    // TODO
+    // ADD_SERIALIZE_METHODS;
 
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(hash);
-        READWRITE(n);
-    }
+    // template <typename Stream, typename Operation>
+    // inline void SerializationOp(Stream& s, Operation ser_action) {
+    //     READWRITE(hash);
+    //     READWRITE(n);
+    // }
+
+    SERIALIZE_METHODS(COutPoint, obj) { READWRITE(obj.hash, obj.n); }
 
     void SetNull() { hash.SetNull(); n = (uint32_t) -1; }
     bool IsNull() const { return (hash.IsNull() && n == (uint32_t) -1); }
@@ -132,14 +135,17 @@ public:
     explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=SEQUENCE_FINAL);
     CTxIn(uint256 hashPrevTx, uint32_t nOut, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=SEQUENCE_FINAL);
 
-    ADD_SERIALIZE_METHODS;
+    // TODO
+    // ADD_SERIALIZE_METHODS;
 
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(prevout);
-        READWRITE(*(CScriptBase*)(&scriptSig));
-        READWRITE(nSequence);
-    }
+    // template <typename Stream, typename Operation>
+    // inline void SerializationOp(Stream& s, Operation ser_action) {
+    //     READWRITE(prevout);
+    //     READWRITE(*(CScriptBase*)(&scriptSig));
+    //     READWRITE(nSequence);
+    // }
+
+    SERIALIZE_METHODS(CTxIn, obj) { READWRITE(obj.prevout, obj.scriptSig, obj.nSequence); }
 
     friend bool operator==(const CTxIn& a, const CTxIn& b)
     {
@@ -182,15 +188,18 @@ public:
 
     CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn);
 
-    ADD_SERIALIZE_METHODS;
+    // TODO
+    // ADD_SERIALIZE_METHODS;
 
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(nValue);
-        READWRITE(*(CScriptBase*)(&scriptPubKey));
-        if (ser_action.ForRead())
-            nRounds = -10;
-    }
+    // template <typename Stream, typename Operation>
+    // inline void SerializationOp(Stream& s, Operation ser_action) {
+    //     READWRITE(nValue);
+    //     READWRITE(*(CScriptBase*)(&scriptPubKey));
+    //     if (ser_action.ForRead())
+    //         nRounds = -10;
+    // }
+  
+    SERIALIZE_METHODS(CTxOut, obj) { READWRITE(obj.nValue, obj.scriptPubKey); }
 
     void SetNull()
     {

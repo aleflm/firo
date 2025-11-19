@@ -19,6 +19,7 @@
 #include <sys/endian.h>
 #elif defined(__APPLE__)
 #include <libkern/OSByteOrder.h>
+
 #define htobe16(x) OSSwapHostToBigInt16(x)
 #define htole16(x) OSSwapHostToLittleInt16(x)
 #define be16toh(x) OSSwapBigToHostInt16(x)
@@ -31,6 +32,21 @@
 #define htole64(x) OSSwapHostToLittleInt64(x)
 #define be64toh(x) OSSwapBigToHostInt64(x)
 #define le64toh(x) OSSwapLittleToHostInt64(x)
+
+// define _internal versions
+#define htobe16_internal(x) htobe16(x)
+#define htole16_internal(x) htole16(x)
+#define be16toh_internal(x) be16toh(x)
+#define le16toh_internal(x) le16toh(x)
+#define htobe32_internal(x) htobe32(x)
+#define htole32_internal(x) htole32(x)
+#define be32toh_internal(x) be32toh(x)
+#define le32toh_internal(x) le32toh(x)
+#define htobe64_internal(x) htobe64(x)
+#define htole64_internal(x) htole64(x)
+#define be64toh_internal(x) be64toh(x)
+#define le64toh_internal(x) le64toh(x)
+
 #endif
 
 // Only define inline functions if not on macOS
@@ -43,6 +59,8 @@ inline uint16_t htobe16(uint16_t host_16bits)
 {
     return host_16bits;
 }
+inline uint16_t
+htobe16(uint16_t host_16bits) __attribute__((alias("htobe16_internal")));
 #endif // HAVE_DECL_HTOBE16
 
 #if HAVE_DECL_HTOLE16 == 0
@@ -50,6 +68,8 @@ inline uint16_t htole16(uint16_t host_16bits)
 {
     return bswap_16(host_16bits);
 }
+inline uint16_t
+htole16(uint16_t host_16bits) __attribute__((alias("htole16_internal")));
 #endif // HAVE_DECL_HTOLE16
 
 #if HAVE_DECL_BE16TOH == 0
@@ -57,6 +77,8 @@ inline uint16_t be16toh(uint16_t big_endian_16bits)
 {
     return big_endian_16bits;
 }
+inline uint16_t
+be16toh(uint16_t big_endian_16bits) __attribute__((alias("be16toh_internal")));
 #endif // HAVE_DECL_BE16TOH
 
 #if HAVE_DECL_LE16TOH == 0
@@ -64,6 +86,8 @@ inline uint16_t le16toh(uint16_t little_endian_16bits)
 {
     return bswap_16(little_endian_16bits);
 }
+inline uint16_t
+le16toh(uint16_t little_endian_16bits) __attribute__((alias("le16toh_internal")));
 #endif // HAVE_DECL_LE16TOH
 
 #if HAVE_DECL_HTOBE32 == 0
@@ -71,6 +95,8 @@ inline uint32_t htobe32(uint32_t host_32bits)
 {
     return host_32bits;
 }
+inline uint32_t
+htobe32(uint32_t host_32bits) __attribute__((alias("htobe32_internal")));
 #endif // HAVE_DECL_HTOBE32
 
 #if HAVE_DECL_HTOLE32 == 0
@@ -78,6 +104,8 @@ inline uint32_t htole32(uint32_t host_32bits)
 {
     return bswap_32(host_32bits);
 }
+inline uint32_t
+htole32(uint32_t host_32bits) __attribute__((alias("htole32_internal")));
 #endif // HAVE_DECL_HTOLE32
 
 #if HAVE_DECL_BE32TOH == 0
@@ -85,6 +113,8 @@ inline uint32_t be32toh(uint32_t big_endian_32bits)
 {
     return big_endian_32bits;
 }
+inline uint32_t
+be32toh(uint32_t big_endian_32bits) __attribute__((alias("be32toh_internal")));
 #endif // HAVE_DECL_BE32TOH
 
 #if HAVE_DECL_LE32TOH == 0
@@ -92,6 +122,8 @@ inline uint32_t le32toh(uint32_t little_endian_32bits)
 {
     return bswap_32(little_endian_32bits);
 }
+inline uint32_t
+le32toh(uint32_t little_endian_32bits) __attribute__((alias("le32toh_internal")));    
 #endif // HAVE_DECL_LE32TOH
 
 #if HAVE_DECL_HTOBE64 == 0
@@ -99,6 +131,8 @@ inline uint64_t htobe64(uint64_t host_64bits)
 {
     return host_64bits;
 }
+inline uint64_t
+htobe64(uint64_t host_64bits) __attribute__((alias("htobe64_internal")));    
 #endif // HAVE_DECL_HTOBE64
 
 #if HAVE_DECL_HTOLE64 == 0
@@ -106,6 +140,8 @@ inline uint64_t htole64(uint64_t host_64bits)
 {
     return bswap_64(host_64bits);
 }
+inline uint64_t
+htole64(uint64_t host_64bits) __attribute__((alias("htole64_internal")));    
 #endif // HAVE_DECL_HTOLE64
 
 #if HAVE_DECL_BE64TOH == 0
@@ -113,6 +149,8 @@ inline uint64_t be64toh(uint64_t big_endian_64bits)
 {
     return big_endian_64bits;
 }
+inline uint64_t
+be64toh(uint64_t big_endian_64bits) __attribute__((alias("be64toh_internal")));    
 #endif // HAVE_DECL_BE64TOH
 
 #if HAVE_DECL_LE64TOH == 0
@@ -120,6 +158,8 @@ inline uint64_t le64toh(uint64_t little_endian_64bits)
 {
     return bswap_64(little_endian_64bits);
 }
+inline uint64_t
+le64toh(uint64_t little_endian_64bits) __attribute__((alias("le64toh_internal")));
 #endif // HAVE_DECL_LE64TOH
 
 #else // WORDS_BIGENDIAN
@@ -129,6 +169,8 @@ inline uint16_t htobe16(uint16_t host_16bits)
 {
     return bswap_16(host_16bits);
 }
+inline uint16_t
+htobe16(uint16_t host_16bits) __attribute__((alias("htobe16_internal")));
 #endif // HAVE_DECL_HTOBE16
 
 #if HAVE_DECL_HTOLE16 == 0
@@ -136,6 +178,8 @@ inline uint16_t htole16(uint16_t host_16bits)
 {
     return host_16bits;
 }
+inline uint16_t
+htole16(uint16_t host_16bits) __attribute__((alias("htole16_internal")));
 #endif // HAVE_DECL_HTOLE16
 
 #if HAVE_DECL_BE16TOH == 0
@@ -143,6 +187,8 @@ inline uint16_t be16toh(uint16_t big_endian_16bits)
 {
     return bswap_16(big_endian_16bits);
 }
+inline uint16_t
+be16toh(uint16_t big_endian_16bits) __attribute__((alias("be16toh_internal")));
 #endif // HAVE_DECL_BE16TOH
 
 #if HAVE_DECL_LE16TOH == 0
@@ -150,6 +196,8 @@ inline uint16_t le16toh(uint16_t little_endian_16bits)
 {
     return little_endian_16bits;
 }
+inline uint16_t
+le16toh(uint16_t little_endian_16bits) __attribute__((alias("le16toh_internal")));
 #endif // HAVE_DECL_LE16TOH
 
 #if HAVE_DECL_HTOBE32 == 0
@@ -157,6 +205,8 @@ inline uint32_t htobe32(uint32_t host_32bits)
 {
     return bswap_32(host_32bits);
 }
+inline uint32_t
+htobe32(uint32_t host_32bits) __attribute__((alias("htobe32_internal")));
 #endif // HAVE_DECL_HTOBE32
 
 #if HAVE_DECL_HTOLE32 == 0
@@ -164,6 +214,8 @@ inline uint32_t htole32(uint32_t host_32bits)
 {
     return host_32bits;
 }
+inline uint32_t
+htole32(uint32_t host_32bits) __attribute__((alias("htole32_internal")));
 #endif // HAVE_DECL_HTOLE32
 
 #if HAVE_DECL_BE32TOH == 0
@@ -171,6 +223,8 @@ inline uint32_t be32toh(uint32_t big_endian_32bits)
 {
     return bswap_32(big_endian_32bits);
 }
+inline uint32_t
+be32toh(uint32_t big_endian_32bits) __attribute__((alias("be32toh_internal")));
 #endif // HAVE_DECL_BE32TOH
 
 #if HAVE_DECL_LE32TOH == 0
@@ -178,6 +232,8 @@ inline uint32_t le32toh(uint32_t little_endian_32bits)
 {
     return little_endian_32bits;
 }
+inline uint32_t
+le32toh(uint32_t little_endian_32bits) __attribute__((alias("le32toh_internal")));
 #endif // HAVE_DECL_LE32TOH
 
 #if HAVE_DECL_HTOBE64 == 0
@@ -185,6 +241,8 @@ inline uint64_t htobe64(uint64_t host_64bits)
 {
     return bswap_64(host_64bits);
 }
+inline uint64_t
+htobe64(uint64_t host_64bits) __attribute__((alias("htobe64_internal")));
 #endif // HAVE_DECL_HTOBE64
 
 #if HAVE_DECL_HTOLE64 == 0
@@ -192,6 +250,8 @@ inline uint64_t htole64(uint64_t host_64bits)
 {
     return host_64bits;
 }
+inline uint64_t
+htole64(uint64_t host_64bits) __attribute__((alias("htole64_internal")));
 #endif // HAVE_DECL_HTOLE64
 
 #if HAVE_DECL_BE64TOH == 0
@@ -199,6 +259,8 @@ inline uint64_t be64toh(uint64_t big_endian_64bits)
 {
     return bswap_64(big_endian_64bits);
 }
+inline uint64_t
+be64toh(uint64_t big_endian_64bits) __attribute__((alias("be64toh_internal")));
 #endif // HAVE_DECL_BE64TOH
 
 #if HAVE_DECL_LE64TOH == 0
@@ -206,6 +268,8 @@ inline uint64_t le64toh(uint64_t little_endian_64bits)
 {
     return little_endian_64bits;
 }
+inline uint64_t
+le64toh(uint64_t little_endian_64bits) __attribute__((alias("le64toh_internal")));
 #endif // HAVE_DECL_LE64TOH
 
 #endif // WORDS_BIGENDIAN
